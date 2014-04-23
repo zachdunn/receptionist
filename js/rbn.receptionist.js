@@ -163,6 +163,7 @@ var Receptionist = (function(){
 			}
 
 			recognition.onresult = function(event) {
+				console.log('Result in');
 				var interim_transcript = '';
 
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -173,9 +174,11 @@ var Receptionist = (function(){
 				  }
 				}
 
-				if (speechCallback && final_transcript != ''){
+				if (final_transcript != ''){
 					searchedFor.innerHTML = '<strong>I heard:</strong> \"' + final_transcript + '\"';
-					speechCallback(final_transcript.toLowerCase());
+					if (isDefined(speechCallback)){
+						speechCallback(final_transcript.toLowerCase());
+					}
 				}
 			}
 
@@ -189,9 +192,9 @@ var Receptionist = (function(){
 	}
 
 	_Receptionist.prototype.listen = function(callback) {
+		
 		if(isDefined(callback)){
-			callback = false;
-		}else{
+			console.log('Assigning Callback');
 			speechCallback = callback;
 		}
 
