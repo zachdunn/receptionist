@@ -1,0 +1,9 @@
+{
+  "author": "Zach Dunn",
+  "name": "receptionist",
+  "description": "A digital receptionist, powered by voice commands.",
+  "version": "0.1.0",
+  "dependencies": {
+    "robinstrap": "git@github.com:robinpowered/robinstrap.git#develop"
+  }
+}
