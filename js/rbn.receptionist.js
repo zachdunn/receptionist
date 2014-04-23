@@ -4,6 +4,8 @@ var Receptionist = (function(){
 		final_transcript = '',
 		recognizing = false,
 		speechCallback = false,
+		options = {},
+		people,
 		listenBtn;
 
 	function _Receptionist(){}
@@ -118,7 +120,7 @@ var Receptionist = (function(){
 	    xhr.send();
 	}
 
-	_Receptionist.prototype.load = function(options, success){
+	_Receptionist.prototype.load = function(userOptions, success){
 		
 		// Get our DOM lined up
 		listenBtn = document.getElementById('listen');
@@ -128,55 +130,62 @@ var Receptionist = (function(){
 		defaultOptions = {
 			name: 'Robin',
 			rosterJSON: 'people.json',
-			imageBase: 'http://static.onemightyroar.com/site-assets/images/roster/'
+			imageBase: 'http://static.onemightyroar.com/site-assets/images/roster/',
+			voiceEnabled: true
 		}
 
-		if (isDefined(options)){
-			extend(defaultOptions, options);
+		if (isDefined(userOptions)){
+			extend(defaultOptions, userOptions);
 		}
 
-		console.log(defaultOptions);
+		options = defaultOptions
+		console.log(options);
+		
+		if(options.voiceEnabled){
+			this.loadSpeech()
+		}
+	}
 
+	_Receptionist.prototype.loadSpeech = function() {
 		if (!('webkitSpeechRecognition' in window)) {
 	  		upgrade();
 		} else {
-		  recognition = new webkitSpeechRecognition();
-		  recognition.continuous = true;
-		  recognition.interimResults = false;
+			recognition = new webkitSpeechRecognition();
+			recognition.continuous = true;
+			recognition.interimResults = false;
 
-		  recognition.onstart = function() {
-		  	recognizing = true;
-		  	final_transcript = '';
-		  	searchedFor.innerHTML = '';
-		  	listenBtn.textContent = 'Listening';
-		  	console.log('Turned it on');
-		  }
+			recognition.onstart = function() {
+				recognizing = true;
+				final_transcript = '';
+				searchedFor.innerHTML = '';
+				listenBtn.textContent = 'Listening';
+				console.log('Turned voice on');
+			}
 
-		  recognition.onresult = function(event) {
-		  	var interim_transcript = '';
+			recognition.onresult = function(event) {
+				var interim_transcript = '';
 
-		    for (var i = event.resultIndex; i < event.results.length; ++i) {
-		      if (event.results[i].isFinal) {
-		        final_transcript += event.results[i][0].transcript;
-		      } else {
-		        interim_transcript += event.results[i][0].transcript;
-		      }
-		    }
+				for (var i = event.resultIndex; i < event.results.length; ++i) {
+				  if (event.results[i].isFinal) {
+				    final_transcript += event.results[i][0].transcript;
+				  } else {
+				    interim_transcript += event.results[i][0].transcript;
+				  }
+				}
 
-		    if (speechCallback && final_transcript != ''){
-		    	searchedFor.innerHTML = '<strong>I heard:</strong> \"' + final_transcript + '\"';
-		    	speechCallback(final_transcript.toLowerCase());
-		    }
-		  }
+				if (speechCallback && final_transcript != ''){
+					searchedFor.innerHTML = '<strong>I heard:</strong> \"' + final_transcript + '\"';
+					speechCallback(final_transcript.toLowerCase());
+				}
+			}
 
-		  recognition.onerror = function(event) {}
-		  recognition.onend = function() {
-		  	recognizing = false;
-		  	listenBtn.textContent = 'Listen';
-		  	console.log('Turned it off');
-		  }
+			recognition.onerror = function(event) {}
+			recognition.onend = function() {
+				recognizing = false;
+				listenBtn.textContent = 'Listen';
+				console.log('Turned voice off');
+			}
 		}
-
 	}
 
 	_Receptionist.prototype.listen = function(callback) {
