@@ -1,6 +1,7 @@
 var people,
     peopleLoaded,
-    matchedPerson = false;
+    searchResults,
+    matchedPerson;
 
 //Load the receptionist
 options = {
@@ -12,17 +13,17 @@ receptionist.load(options, function(){
     // Watch for audio events
     $('#listen').on('click', function(e){
         e.preventDefault();
-        matchedPerson = false;
+        searchResults = false;
         
         receptionist.listen(function(transcript){
             
-            matchedPerson = receptionist.search(transcript);
+            searchResults = receptionist.search(transcript);
             
             console.log(transcript);
-            console.log(matchedPerson);
+            console.log(searchResults);
 
-            if (matchedPerson.length > 0){
-                receptionist.showPerson(matchedPerson[0]); // Send first result by default
+            if (searchResults.length > 0){
+                receptionist.showPerson(searchResults[0]); // Send first result by default
             }else{
                 console.log('No results found');
                 $('#matched').html('<p>Sorry, I could\'t find anyone by that name.</p>')
