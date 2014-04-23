@@ -1,10 +1,10 @@
 var Receptionist = (function(){
 		
 	var recognition,
-			final_transcript = '',
-			recognizing = false,
-			speechCallback = false,
-			listenBtn;
+		final_transcript = '',
+		recognizing = false,
+		speechCallback = false,
+		listenBtn;
 
 	function _Receptionist(){}
 
@@ -22,15 +22,17 @@ var Receptionist = (function(){
           }
       }
       return objects;
-  }
+  	}
 
 	_Receptionist.prototype.load = function(){
 		
 		// Get our DOM lined up
 		listenBtn = document.getElementById('listen');
+		searchedFor = document.getElementById('searchedFor');
+		matchedDisplay = document.getElementById('matched');
 
 		if (!('webkitSpeechRecognition' in window)) {
-	  	upgrade();
+	  		upgrade();
 		} else {
 		  recognition = new webkitSpeechRecognition();
 		  recognition.continuous = true;
@@ -39,7 +41,7 @@ var Receptionist = (function(){
 		  recognition.onstart = function() {
 		  	recognizing = true;
 		  	final_transcript = '';
-		  	$('#searchedFor').text('');
+		  	searchedFor.innerHTML = '';
 		  	listenBtn.textContent = 'Listening';
 		  	console.log('Turned it on');
 		  }
@@ -54,12 +56,9 @@ var Receptionist = (function(){
 		        interim_transcript += event.results[i][0].transcript;
 		      }
 		    }
-		    //final_transcript = capitalize(final_transcript);
-		    //final_span.innerHTML = linebreak(final_transcript);
-		    //interim_span.innerHTML = linebreak(interim_transcript);
 
 		    if (speechCallback && final_transcript != ''){
-		    	$('#searchedFor').html('<strong>I heard:</strong> \"' + final_transcript + '\"');
+		    	searchedFor.innerHTML = '<strong>I heard:</strong> \"' + final_transcript + '\"';
 		    	speechCallback(final_transcript.toLowerCase());
 		    }
 		  }
@@ -86,7 +85,6 @@ var Receptionist = (function(){
 			return
 		}
 		recognition.start();
-
 	}
 
 	_Receptionist.prototype.showPerson = function(person) {
@@ -95,7 +93,7 @@ var Receptionist = (function(){
 			return;
 		}
 		var imageBase = 'http://static.onemightyroar.com/site-assets/images/roster/'
-		$('#matched').html('<img width="400px" src="' + imageBase + person.picture + '" alt="' + person.name + '"> <p>' + person.title + '</p>');
+		matchedDisplay.innerHTML = '<img width="400px" src="' + imageBase + person.picture + '" alt="' + person.name + '"> <p>' + person.title + '</p>';
 	}
 
 	_Receptionist.prototype.upgrade = function() { 
