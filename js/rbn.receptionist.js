@@ -129,7 +129,7 @@ var Receptionist = (function(){
 
 		defaultOptions = {
 			name: 'Robin',
-			rosterJSON: 'people.json',
+			rosterURL: 'people.json',
 			imageBase: 'http://static.onemightyroar.com/site-assets/images/roster/',
 			voiceEnabled: true
 		}
@@ -144,6 +144,17 @@ var Receptionist = (function(){
 		if(options.voiceEnabled){
 			this.loadSpeech()
 		}
+
+		loadJSON(options.rosterURL, function(rosterData){
+			people = rosterData;
+			console.log(people);
+			if(success)
+				success();
+		}, function(xhr){
+			// Something went wrong
+			if(error)
+				error(xhr);
+		});
 	}
 
 	_Receptionist.prototype.loadSpeech = function() {
@@ -218,6 +229,7 @@ var Receptionist = (function(){
 	}
 
 	_Receptionist.prototype.search = function(term, pool) {
+		if (!isDefined(pool)) pool = people;
 		var matchedPerson = getObjects(pool, 'name', term);
 		return matchedPerson;
 	}

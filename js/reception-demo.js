@@ -4,34 +4,19 @@ var people,
 
 //Load the receptionist
 options = {
-    roster: 'people.json'
+    rosterURL: 'people.json'
 }
 
 receptionist.load(options, function(){
     console.log("Ready to go");
-});
-
-// Get the company roster
-$.getJSON('people.json', function(data){
-    people = data;
-    if (people){
-        peopleLoaded = true
-    }
-}).then(function(){
     // Watch for audio events
     $('#listen').on('click', function(e){
         e.preventDefault();
         matchedPerson = false;
         
         receptionist.listen(function(transcript){
-
-            // Don't proceed unless the roster is loaded.
-            if (!peopleLoaded){
-                console.log('The people roster hasn\'t been loaded yet');
-                return;
-            }
             
-            matchedPerson = receptionist.search(transcript, people);
+            matchedPerson = receptionist.search(transcript);
             
             console.log(transcript);
             console.log(matchedPerson);
@@ -45,4 +30,3 @@ $.getJSON('people.json', function(data){
         });
     });
 });
-
