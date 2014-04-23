@@ -3,7 +3,13 @@ var people,
     matchedPerson = false;
 
 //Load the receptionist
-receptionist.load();
+options = {
+    roster: 'people.json'
+}
+
+receptionist.load(options, function(){
+    console.log("Ready to go");
+});
 
 // Get the company roster
 $.getJSON('people.json', function(data){
