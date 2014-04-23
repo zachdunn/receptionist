@@ -1,0 +1,97 @@
+{
+  "people": [
+    {
+      "name": "Sam Dunn",
+      "picture": "pic-samdunn.jpg",
+      "title": "CEO &amp; Co-founder",
+      "twitter": "sdunn",
+      "dribbble": "sam"
+    },
+    {
+      "name": "Zach Dunn",
+      "picture": "pic-zachdunn.jpg",
+      "title": "CPO &amp; Co-founder",
+      "github": "zachdunn",
+      "twitter": "zachdunn"
+    },
+    {
+      "name": "Brian Muse",
+      "picture": "pic-brianmuse.jpg",
+      "title": "CTO &amp; Partner",
+      "github": "brianmuse",
+      "twitter": "briancmuse"
+    },
+    {
+      "name": "Apollo Sinkevicius",
+      "picture": "pic-apollosinkevicius.jpg",
+      "title": "COO &amp; Partner",
+      "twitter": "apsinkus"
+    },
+    {
+      "name": "Adam Zais",
+      "picture": "pic-adamzais.jpg",
+      "title": "EVP Sales &amp; Marketing",
+      "twitter": "adamzais"
+    },
+    {
+      "name": "Eli Perkins",
+      "picture": "pic-eliperkins.jpg",
+      "title": "Developer",
+      "twitter": "_eliperkins",
+      "github": "eliperkins"
+    },
+    {
+      "name": "Trevor Suarez",
+      "picture": "pic-trevorsuarez.jpg",
+      "title": "Developer",
+      "twitter": "trevorsuarez",
+      "github": "Rican7"
+    },
+    {
+      "name": "Brendan O'Neil",
+      "picture": "pic-brendanoneil.jpg",
+      "title": "Sales",
+      "twitter": "brendan_o"
+    },
+    {
+      "name": "Jake Struzik",
+      "picture": "pic-jakestruzik.jpg",
+      "title": "Developer",
+      "twitter": "jstruzik",
+      "github": "jstruzik"
+    },
+    {
+      "name": "Clark Van Der Beken",
+      "picture": "pic-clarkvanderbeken.jpg",
+      "title": "Marketing",
+      "twitter": "clarkgvan"
+    },
+    {
+      "name": "Jonah Stuart",
+      "picture": "pic-jonahstuart.jpg",
+      "title": "Designer",
+      "twitter": "jonah_stuart",
+      "dribbble": "jonah_stuart"
+    },
+    {
+      "name": "Emily True",
+      "picture": "pic-emilytrue.jpg",
+      "title": "Project Partner",
+      "twitter": "etrue11"
+    },
+    {
+      "name": "Mark Costello",
+      "picture": "pic-markcostello.jpg",
+      "title": "Developer",
+      "github": "mcos",
+      "twitter": "markjcostello"
+    },
+    {
+      "name": "Chris Mark",
+      "picture": "pic-chrismark.jpg",
+      "title": "Electrical Engineer",
+      "twitter": "ccpmark",
+      "github": "ccpmark"
+    }
+  ]
+}

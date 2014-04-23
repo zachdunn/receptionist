@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Robin Receptionist</title>
+
+        <meta name="description" content="Receptionist">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <script type="text/javascript" src="//use.typekit.net/xyl8rhh.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,400italic,600italic' rel='stylesheet' type='text/css'>
+
+        <link rel='stylesheet' href='bower_components/robinstrap/dist/css/robinstrap.css'>
+        <style>
+            section{
+                margin:60px 0;
+            }
+            #results{
+                clear:both;
+                width:600px;
+                margin:30px 0;
+            }
+            #matched p{
+                width:400px;
+                text-align:center;
+                padding:30px 0;
+            }
+        </style>
+    </head>
+    <body id="cities-page" class="cities-page">
+        
+        <section>
+            <div class="wrap">
+                <h1 class="title">Robin Receptionist</h1>
+                <p>Press the button, say your host's name, and then press the button again.</p>
+                <a id="listen" href="#" class="btnPrimary">Listen</a>
+
+                <div id="results">
+                    <p id="searchedFor"></p>
+                    <div id="matched"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+        <script src="js/rbn.receptionist.js"></script>
+        <script src="js/reception-demo.js"></script>
+    </body>
+</html>
