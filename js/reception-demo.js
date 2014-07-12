@@ -8,6 +8,8 @@ options = {
     rosterURL: 'people.json'
 }
 
+var receptionist = new Receptionist();
+
 receptionist.load(options, function(){
     console.log("Ready to go");
     // Watch for audio events

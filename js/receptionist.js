@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 var Receptionist = (function(){
 		
 	var recognition,
@@ -238,9 +240,5 @@ var Receptionist = (function(){
 
 })(this);
 
-if(typeof exports == 'undefined'){
-    var exports = this['mymodule'] = {};
-}
-exports.RobinReceptionist = Receptionist;
-
-var receptionist = new Receptionist();
+module.exports = Receptionist;
+global.Receptionist = Receptionist;
