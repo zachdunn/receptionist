@@ -12,7 +12,15 @@ var Receptionist = (function(){
 		people,
 		listenBtn;
 
-	function _Receptionist(){}
+	var defaults = {
+		name: 'Robin'
+	};
+
+	function _Receptionist(config){
+		this.options = _.extend(defaults, config);
+		this.setName(this.options.name);
+		console.log('Receptionist started as \"' + this.getName() + '\"');
+	}
 
 	/*
 	 * Utils and helpers (Mainly from Angular)
@@ -218,6 +226,14 @@ var Receptionist = (function(){
 			return
 		}
 		recognition.start();
+	}
+
+	_Receptionist.prototype.setName = function (assignment) {
+		this.name = assignment;
+	}
+
+	_Receptionist.prototype.getName = function(){
+		return this.name;
 	}
 
 	_Receptionist.prototype.showPerson = function(person) {
