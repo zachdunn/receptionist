@@ -79,6 +79,12 @@ var Receptionist = (function(){
 
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
 				  if (event.results[i].isFinal) {
+				  	var soundbite = event.results[i][0].transcript;
+				  	console.log('%c' + soundbite.trim().toLowerCase(), 'color:green;');
+				  	if (soundbite.trim().toLowerCase() == "robin go off the record"){
+				    	console.log('SHUT IT DOWN');
+				    	recognition.stop();
+				    }
 				    final_transcript += event.results[i][0].transcript;
 				  } else {
 				    interim_transcript += event.results[i][0].transcript;
@@ -99,6 +105,10 @@ var Receptionist = (function(){
 				console.log('Turned voice off');
 			}
 		}
+	}
+
+	_Receptionist.prototype.checkCommands = function (commands) {
+
 	}
 
 	_Receptionist.prototype.listen = function(callback) {
