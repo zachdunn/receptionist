@@ -1,0 +1,25 @@
+{
+  "name": "receptionist",
+  "version": "0.0.0",
+  "description": "Automation through speech",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "browserify": "~4.2.0",
+    "gulp": "~3.8.6",
+    "gulp-concat": "~2.3.3",
+    "gulp-uglify": "~0.3.1",
+    "underscore": "~1.6.0",
+    "vinyl-source-stream": "^0.1.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zachdunn/receptionist.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zachdunn/receptionist/issues"
+  },
+  "homepage": "https://github.com/zachdunn/receptionist"
+}
