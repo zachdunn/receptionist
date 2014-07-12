@@ -65,8 +65,7 @@ var Receptionist = (function(){
 		} else {
 			recognition = new webkitSpeechRecognition();
 			recognition.continuous = true;
-			recognition.interimResults = false;
-
+			recognition.interimResults = true;
 			recognition.onstart = function() {
 				recognizing = true;
 				final_transcript = '';
@@ -74,7 +73,6 @@ var Receptionist = (function(){
 				listenBtn.textContent = 'Listening';
 				console.log('Turned voice on');
 			}
-
 			recognition.onresult = function(event) {
 				console.log('Result in');
 				var interim_transcript = '';
@@ -94,7 +92,6 @@ var Receptionist = (function(){
 					}
 				}
 			}
-
 			recognition.onerror = function(event) {}
 			recognition.onend = function() {
 				recognizing = false;
