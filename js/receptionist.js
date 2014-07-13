@@ -14,6 +14,7 @@ var Receptionist = (function(){
 
 	var defaults = {
 			name: 'robin',
+			speechTrigger: 'robin',
 			rosterURL: 'people.json',
 			imageBase: 'http://static.onemightyroar.com/site-assets/images/roster/',
 			voiceEnabled: true
@@ -22,6 +23,12 @@ var Receptionist = (function(){
 	function _Receptionist(config){
 		this.options = _.extend(defaults, config);
 		this.setName(this.options.name);
+
+		if (!config.speechTrigger){
+			// If no configuration default to name as trigger
+			this.speechTrigger = this.getName().toLowerCase();
+		}
+
 		console.log('Receptionist started as \"' + this.getName() + '\"');
 		
 		// Get our DOM lined up
@@ -105,8 +112,8 @@ var Receptionist = (function(){
     
     console.log(words, keyword);
 
-    if (keyword == "robin"){
-      console.log('This is a Robin command');
+    if (keyword == this.speechTrigger){
+      console.log('This is a receptionist command');
       switch (words[1]) {
         case 'notify' :
           var to = words[2];
