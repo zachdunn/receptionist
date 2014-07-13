@@ -33,7 +33,7 @@ receptionist.load().then(function(){
   });
 
   receptionist.on('speech', function(data){
-    console.log(data.command);
+    var results = false;
     $('.loading-overlay').fadeOut(300);
     var words = data.command.split(' ');
     switch (words[0]) {
@@ -41,23 +41,33 @@ receptionist.load().then(function(){
         var to = words[1],
         message = words.splice(2).join(' ');
         console.log(to + ':', message)
+        results = 'Message ' + to + ' \"' + message + '\"';
+        $('#intent').html('<strong>I will:</strong> ' + results);
         break;
       case 'book' :
         var target = words.splice(1).join(' ');
         console.log('Booking:', target);
+        results = "Book " + target;
+        $('#intent').html('<strong>I will:</strong> ' + results);
         break;
       case 'go' :
         var target = words.splice(1).join(' ');
         if (target == "off the record"){
           console.log('Notes disabled');
+          results = "Stop taking notes";
           receptionist.stopListening();
         }else if (target == "on the record"){
           console.log('Taking notes');
+          results = "Take notes";
         }
+        $('#intent').html('<strong>I will:</strong> ' + results);
         break;
       case 'share' :
         var target = words.splice(1).join(' ');
         console.log('Sharing:', target);
+        results = "Share " + target;
+        $('#intent').html('<strong>I will:</strong> ' + results);
+        break;
       case 'find':
         var target = words.splice(1).join(' ');
         searchResults = receptionist.search(target);
