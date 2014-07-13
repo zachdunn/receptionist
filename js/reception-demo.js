@@ -18,7 +18,7 @@ receptionist.load(options, function(){
     searchResults = false;
     
     receptionist.listen(function(transcript){     
-      searchResults = receptionist.search(transcript);
+      /*searchResults = receptionist.search(transcript);
      
       console.log(transcript);
       console.log(searchResults);
@@ -28,7 +28,7 @@ receptionist.load(options, function(){
       }else{
         console.log('No results found');
         $('#matched').html('<p>Sorry, I could\'t find anyone by that name.</p>');
-      }
+      }*/
     });
   });
 });

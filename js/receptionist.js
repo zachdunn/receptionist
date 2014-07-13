@@ -2,7 +2,8 @@ var _ = require('underscore');
 
 var Receptionist = (function(){
 		
-	var recognition,
+	var root = this,
+		recognition,
 		final_transcript = '',
 		recognizing = false,
 		speechCallback = false,
@@ -11,7 +12,7 @@ var Receptionist = (function(){
 		listenBtn;
 
 	var defaults = {
-		name: 'Robin'
+		name: 'robin'
 	};
 
 	function _Receptionist(config){
@@ -58,6 +59,7 @@ var Receptionist = (function(){
 	}
 
 	_Receptionist.prototype.loadSpeech = function() {
+		var _this = this;
 		if (!('webkitSpeechRecognition' in window)) {
 	  		upgrade();
 		} else {
@@ -76,13 +78,14 @@ var Receptionist = (function(){
 				var interim_transcript = '';
 
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
+					if (event.results[i][0].confidence < .5){
+						console.log('Not enough confidence to translate');
+						return false;
+					}
 				  if (event.results[i].isFinal) {
 				  	var soundbite = event.results[i][0].transcript;
-				  	console.log('%c' + soundbite.trim().toLowerCase(), 'color:green;');
-				  	if (soundbite.trim().toLowerCase() == "robin go off the record"){
-				    	console.log('SHUT IT DOWN');
-				    	recognition.stop();
-				    }
+				  	console.log('%c' + soundbite.trim().toLowerCase(), 'color:green;', event.results[i][0].confidence);
+				  	_this.checkCommands(soundbite);
 				    final_transcript += event.results[i][0].transcript;
 				  } else {
 				    interim_transcript += event.results[i][0].transcript;
@@ -97,6 +100,9 @@ var Receptionist = (function(){
 				}
 			}
 			recognition.onerror = function(event) {}
+			recognition.onnomatch = function(event){
+				// Couldn't hear anything
+			}
 			recognition.onend = function() {
 				recognizing = false;
 				listenBtn.textContent = 'Listen';
@@ -105,8 +111,44 @@ var Receptionist = (function(){
 		}
 	}
 
-	_Receptionist.prototype.checkCommands = function (commands) {
+	_Receptionist.prototype.checkCommands = function (rawSpeech) {
+    console.log('Checking for speech commands');
+    rawSpeech = rawSpeech.trim().toLowerCase();
+    var words = rawSpeech.split(' ');
+    var keyword = words[0];
+    
+    console.log(words, keyword);
 
+    if (keyword == "robin"){
+      console.log('This is a Robin command');
+      switch (words[1]) {
+        case 'notify' :
+          var to = words[2];
+          var message = words.splice(3).join(' ');
+          console.log(to + ':', message)
+          break;
+        case 'book' :
+        	var target = words.splice(2).join(' ');
+        	console.log('Booking:', target);
+        	break;
+        case 'go' :
+        	var fragment = words.splice(2).join(' ');
+        	if (fragment == "off the record"){
+        		console.log('Notes disabled');
+        		recognition.stop();
+        	}
+        	break;
+        case 'find':
+        	var needle = words.splice(2).join(' ');
+        	var searchResults = this.search(needle);
+        	if (searchResults.length > 0) {
+        		this.showPerson(searchResults[0]);
+        	}
+        	break;
+      }
+    }else{
+      return false;
+    }
 	}
 
 	_Receptionist.prototype.listen = function(callback) {
