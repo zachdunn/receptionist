@@ -8,15 +8,14 @@ options = {
   rosterURL: 'people.json'
 }
 
-var receptionist = new Receptionist();
+var receptionist = new Receptionist(options);
 
-receptionist.load(options, function(){
-  console.log("Ready to go");
+receptionist.load().then(function(){
+
   // Watch for audio events
   $('#listen').on('click', function(e){
     e.preventDefault();
     searchResults = false;
-    
     receptionist.listen(function(transcript){     
       /*searchResults = receptionist.search(transcript);
      
@@ -31,4 +30,5 @@ receptionist.load(options, function(){
       }*/
     });
   });
+
 });

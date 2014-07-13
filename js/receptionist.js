@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var Q = require('q');
 
 var Receptionist = (function(){
 		
@@ -12,50 +13,37 @@ var Receptionist = (function(){
 		listenBtn;
 
 	var defaults = {
-		name: 'robin'
-	};
+			name: 'robin',
+			rosterURL: 'people.json',
+			imageBase: 'http://static.onemightyroar.com/site-assets/images/roster/',
+			voiceEnabled: true
+	}
 
 	function _Receptionist(config){
 		this.options = _.extend(defaults, config);
 		this.setName(this.options.name);
 		console.log('Receptionist started as \"' + this.getName() + '\"');
-	}
-
-	_Receptionist.prototype.load = function(userOptions, success){
 		
 		// Get our DOM lined up
 		listenBtn = document.getElementById('listen');
 		searchedFor = document.getElementById('searchedFor');
 		matchedDisplay = document.getElementById('matched');
-
-		defaultOptions = {
-			name: 'Robin',
-			rosterURL: 'people.json',
-			imageBase: 'http://static.onemightyroar.com/site-assets/images/roster/',
-			voiceEnabled: true
-		}
-
-		if (isDefined(userOptions)){
-			extend(defaultOptions, userOptions);
-		}
-
-		options = defaultOptions
-		console.log(options);
 		
-		if(options.voiceEnabled){
+		return this;
+	}
+
+	_Receptionist.prototype.load = function(){
+		var deferred = Q.defer();
+		if(this.options.voiceEnabled){
 			this.loadSpeech()
 		}
-
-		loadJSON(options.rosterURL, function(rosterData){
+		loadJSON(this.options.rosterURL, function(rosterData){
 			people = rosterData;
-			console.log(people);
-			if(success)
-				success();
+			deferred.resolve();
 		}, function(xhr){
-			// Something went wrong
-			if(error)
-				error(xhr);
+			deferred.reject(xhr);
 		});
+		return deferred.promise;
 	}
 
 	_Receptionist.prototype.loadSpeech = function() {
@@ -74,28 +62,26 @@ var Receptionist = (function(){
 				console.log('Turned voice on');
 			}
 			recognition.onresult = function(event) {
-				console.log('Result in');
 				var interim_transcript = '';
-
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
 					if (event.results[i][0].confidence < .5){
-						console.log('Not enough confidence to translate');
+						//console.log('Not enough confidence to translate');
 						return false;
 					}
 				  if (event.results[i].isFinal) {
 				  	var soundbite = event.results[i][0].transcript;
 				  	console.log('%c' + soundbite.trim().toLowerCase(), 'color:green;', event.results[i][0].confidence);
 				  	_this.checkCommands(soundbite);
-				    final_transcript += event.results[i][0].transcript;
+				    final_transcript = event.results[i][0].transcript;
 				  } else {
 				    interim_transcript += event.results[i][0].transcript;
 				  }
 				}
 
 				if (final_transcript != ''){
-					searchedFor.innerHTML = '<strong>I heard:</strong> \"' + final_transcript + '\"';
+					searchedFor.innerHTML = '<strong>I heard:</strong> \"' + final_transcript.trim() + '\"';
 					if (isDefined(speechCallback)){
-						speechCallback(final_transcript.toLowerCase());
+						speechCallback(final_transcript.trim().toLowerCase());
 					}
 				}
 			}
@@ -160,7 +146,7 @@ var Receptionist = (function(){
 
 		if (recognizing) {
 			recognition.stop();
-			return
+			return;
 		}
 		recognition.start();
 	}
@@ -178,7 +164,7 @@ var Receptionist = (function(){
 			console.log('We need a person to display');
 			return;
 		}
-		matchedDisplay.innerHTML = '<img width="400px" src="' + defaultOptions.imageBase + person.picture + '" alt="' + person.name + '"> <p>' + person.title + '</p>';
+		matchedDisplay.innerHTML = '<img width="400px" src="' + this.options.imageBase + person.picture + '" alt="' + person.name + '"> <p>' + person.title + '</p>';
 	}
 
 	_Receptionist.prototype.upgrade = function() { 

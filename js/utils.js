@@ -89,7 +89,7 @@
       return objects;
     }
 
-    function loadJSON(path, success, error)
+  function loadJSON(path, success, error)
   {
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function()
