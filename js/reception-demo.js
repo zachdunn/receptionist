@@ -24,6 +24,7 @@ receptionist.load().then(function(){
     if(code == 32) { //Spacebar
       e.preventDefault();
       receptionist.listen();
+      $('.loading-overlay').fadeOut(300);
     }
   });
 

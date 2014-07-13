@@ -117,7 +117,7 @@ var Receptionist = (function(){
     rawSpeech = rawSpeech.trim().toLowerCase();
     var words = rawSpeech.split(' ');
     var keyword = words[0];
-    
+
     if (keyword == this.speechTrigger){
     	// Strip out keyword
     	var command = words.slice(1).join(' ').trim().toLowerCase();
@@ -132,6 +132,7 @@ var Receptionist = (function(){
 		if (recognizing) {
 			recognition.stop();
 			recognizing = false;
+			recognition.commandActive = false;
 		};
 	}
 
