@@ -20,7 +20,7 @@
         <link rel='stylesheet' href='bower_components/robinstrap/dist/css/robinstrap.css'>
         <style>
             section{
-                margin:60px 0;
+                padding:60px 0;
             }
             #results{
                 clear:both;
@@ -32,10 +32,14 @@
                 text-align:center;
                 padding:30px 0;
             }
+            .loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;}.loading-overlay>svg{-webkit-transform:translate(-50%,-50%);height:50px;width:50px;position:absolute;top:45%;left:50%;}@-webkit-keyframes three-sixty {0%{-webkit-transform:rotate(0deg);}20%{-webkit-transform:rotate(180deg);}50%{-webkit-transform:rotate(180deg);}70%{-webkit-transform:rotate(360deg);}100%{-webkit-transform:rotate(360deg);}}@-webkit-keyframes fade {from{opacity:1;-webkit-transform:scale(1,1)translate(-50%,-50%);}to{opacity:0;-webkit-transform:scale(2,2)translate(-50%,-50%);}}.loading-circles{position:absolute;left:50%;top:45%;width:60px;height:60px;}.loading-circles>.circle{position:absolute;-webkit-transform-origin:0 0;-webkit-transform:scale(1,1)translate(-50%,-50%);-webkit-animation:fade 1s linear infinite;content:" ";display:inline-block;height:45px;width:45px;border-radius:50%;background:#FD4B46;opacity:1;}.circle.hold{-webkit-animation:none;}.circle.first+.circle{-webkit-animation-delay:.33s;}.circle.first+.circle+.circle{-webkit-animation-delay:.66s;}
+            .loading-overlay{display:none;}
         </style>
     </head>
-    <body id="cities-page" class="cities-page">
+    <body>
         
+        <div class="loading-overlay"><div class="loading-circles"><div class="circle hold"></div><div class="circle first"></div><div class="circle"></div><div class="circle"></div></div><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" enable-background="new 0 0 500 500" xml:space="preserve"><path fill="#FFFFFF" d="M318.615,167.559c-4.533-4.754-10.117-8.507-16.747-11.26c-6.635-2.752-13.466-4.559-21.69-4.559h-92.726 l11.691,26.571l-30.33,140.86h38.049l13.795-62.334h24.014c10.186,0,16.892,5.031,20.277,14.517c1.219,3.417,2.09,7.048,3.84,14.553 c3.656,15.68,4.383,33.265,4.383,33.265h37.002c0,0-0.507-16.624-4.671-34.367c-5.207-22.182-11.055-34.59-11.055-34.59 s13.208-6.493,17.993-10.583c4.786-4.086,8.855-9.049,12.216-14.89c3.358-5.838,5.455-12.677,6.298-20.521 c0.67-7.171-0.085-13.889-2.264-20.145C326.503,177.819,323.147,172.314,318.615,167.559z M272.042,180.109 c3.021,0,7.346,0.926,9.864,2.177c2.518,1.251,4.659,2.964,6.421,5.13c1.763,2.17,3.061,4.716,3.903,7.633 c0.838,2.921,1.09,5.966,0.755,9.134c-0.339,3.504-1.385,6.757-3.149,9.76c-1.763,3.003-3.864,5.592-6.297,7.758 c-2.437,2.171-5.164,3.879-8.186,5.131c-1.323,0.548-2.628,0.954-3.919,1.262c-1.333,0.259-2.652,0.406-3.951,0.406l-40.547,0.003 l11.099-48.393L272.042,180.109z"/></svg></div>
+
         <section>
             <div class="wrap">
                 <h1 class="title">Robin Receptionist</h1>

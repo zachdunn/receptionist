@@ -23,6 +23,7 @@ var Receptionist = (function(){
 	function _Receptionist(config){
 		this.options = _.extend(defaults, config);
 		this.setName(this.options.name);
+		this.actions = [];
 
 		if (!config.speechTrigger){
 			// If no configuration default to name as trigger
@@ -66,7 +67,6 @@ var Receptionist = (function(){
 				final_transcript = '';
 				searchedFor.innerHTML = '';
 				listenBtn.textContent = 'Listening';
-				console.log('Turned voice on');
 			}
 			recognition.onresult = function(event) {
 				var interim_transcript = '';
@@ -75,12 +75,21 @@ var Receptionist = (function(){
 						//console.log('Not enough confidence to translate');
 						return false;
 					}
+					var soundbite = event.results[i][0].transcript;
 				  if (event.results[i].isFinal) {
-				  	var soundbite = event.results[i][0].transcript;
-				  	console.log('%c' + soundbite.trim().toLowerCase(), 'color:green;', event.results[i][0].confidence);
+				  	this.commandActive = false;
+				  	console.groupCollapsed('%cLet\'s see what I can do...', 'color:green;');
+				  	console.log('You said: ' + soundbite.trim().toLowerCase());
+				  	console.log('I have ' + Math.floor(event.results[i][0].confidence * 100).toFixed(2) + '% confidence');
+				  	console.groupEnd();
 				  	_this.checkCommands(soundbite);
 				    final_transcript = event.results[i][0].transcript;
 				  } else {
+				  	if (soundbite.trim().toLowerCase() == "robin" && !this.commandActive){
+				  		console.log('%cRobin Active', 'color:red;');
+				  		_this.trigger('callout', soundbite);
+				  		this.commandActive = true;
+				  	}
 				    interim_transcript += event.results[i][0].transcript;
 				  }
 				}
@@ -105,57 +114,54 @@ var Receptionist = (function(){
 	}
 
 	_Receptionist.prototype.checkCommands = function (rawSpeech) {
-    console.log('Checking for speech commands');
     rawSpeech = rawSpeech.trim().toLowerCase();
     var words = rawSpeech.split(' ');
     var keyword = words[0];
     
-    console.log(words, keyword);
-
     if (keyword == this.speechTrigger){
-      console.log('This is a receptionist command');
-      switch (words[1]) {
-        case 'notify' :
-          var to = words[2];
-          var message = words.splice(3).join(' ');
-          console.log(to + ':', message)
-          break;
-        case 'book' :
-        	var target = words.splice(2).join(' ');
-        	console.log('Booking:', target);
-        	break;
-        case 'go' :
-        	var fragment = words.splice(2).join(' ');
-        	if (fragment == "off the record"){
-        		console.log('Notes disabled');
-        		recognition.stop();
-        	}
-        	break;
-        case 'find':
-        	var needle = words.splice(2).join(' ');
-        	var searchResults = this.search(needle);
-        	if (searchResults.length > 0) {
-        		this.showPerson(searchResults[0]);
-        	}
-        	break;
-      }
+    	// Strip out keyword
+    	var command = words.slice(1).join(' ').trim().toLowerCase();
+      console.log('This is a receptionist command. Trigger:', keyword);
+      this.trigger('speech', {command: command, raw: rawSpeech});
     }else{
       return false;
     }
 	}
 
-	_Receptionist.prototype.listen = function(callback) {
-		
-		if(isDefined(callback)){
-			console.log('Assigning Callback');
-			speechCallback = callback;
-		}
-
+	_Receptionist.prototype.stopListening = function() {
 		if (recognizing) {
 			recognition.stop();
-			return;
-		}
+			recognizing = false;
+		};
+	}
+
+	_Receptionist.prototype.startListening = function() {
 		recognition.start();
+		recognizing = true;
+	}
+
+	_Receptionist.prototype.on = function(evt, callback) {
+		this.actions[evt] = callback;
+	}
+
+	_Receptionist.prototype.trigger = function(evt, data) {
+		if (this.actions[evt]){
+			this.actions[evt](data);
+		}
+		return this;
+	}
+
+	/**
+	* Toggle recognition states
+	* @return Receptionist
+	*/
+	_Receptionist.prototype.listen = function() {
+		if (recognizing){
+			this.stopListening();
+		}else{
+			this.startListening();
+		}
+		return this;
 	}
 
 	_Receptionist.prototype.setName = function (assignment) {
@@ -181,7 +187,7 @@ var Receptionist = (function(){
 	_Receptionist.prototype.search = function(term, pool) {
 		if (!isDefined(pool)) pool = people;
 		var matchedPerson = getObjects(pool, 'name', term);
-		return matchedPerson;
+		return matchedPerson || false;
 	}
 	
 	return _Receptionist;
